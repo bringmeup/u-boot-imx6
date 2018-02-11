@@ -18,6 +18,9 @@ config MX6DL
 config MX6Q
 	bool
 
+config MX6NEXO
+	bool
+
 config MX6QDL
 	bool
 
@@ -401,6 +404,9 @@ config TARGET_NITROGEN6SX
 config TARGET_NITROGEN6X
 	bool "nitrogen6x"
 
+config TARGET_NEXO
+	bool "nexo"
+
 config TARGET_OPOS6ULDEV
 	bool "Armadeus OPOS6ULDev board"
 	select MX6UL_OPOS6UL
@@ -583,6 +589,7 @@ source "board/boundary/nitrogen6_som2/Kconfig"
 source "board/boundary/nitrogen6_vm/Kconfig"
 source "board/boundary/nitrogen6sx/Kconfig"
 source "board/boundary/nitrogen6x/Kconfig"
+source "board/boundary/nexo/Kconfig"
 source "board/boundary/nw/Kconfig"
 source "board/boundary/oc/Kconfig"
 source "board/boundary/per/Kconfig"

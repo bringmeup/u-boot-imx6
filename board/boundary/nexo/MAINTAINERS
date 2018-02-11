@@ -1,0 +1,6 @@
+NEXO BOARD
+M:	Michal Stawinski <michal.stawinski@gmail.com>
+S:	Maintained
+F:	board/boundary/nexo/
+F:	include/configs/nexo.h
+F:	configs/nexo_defconfig

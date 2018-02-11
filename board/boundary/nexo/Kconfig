@@ -1,0 +1,18 @@
+if TARGET_NEXO
+
+config SYS_BOARD
+	default "nexo"
+
+config SYS_VENDOR
+	default "boundary"
+
+config SYS_CONFIG_NAME
+	default "nexo"
+
+config ENV_WLMAC
+	bool
+	default	y
+
+source "board/boundary/common/Kconfig"
+
+endif

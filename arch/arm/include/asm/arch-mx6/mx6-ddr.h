@@ -10,6 +10,9 @@
 #ifdef CONFIG_MX6Q
 #include "mx6q-ddr.h"
 #else
+#ifdef CONFIG_MX6NEXO
+#include "mx6nexo-ddr.h"
+#else
 #if defined(CONFIG_MX6DL) || defined(CONFIG_MX6S)
 #include "mx6dl-ddr.h"
 #else
@@ -27,6 +30,7 @@
 #endif	/* CONFIG_MX6UL */
 #endif	/* CONFIG_MX6SX */
 #endif	/* CONFIG_MX6DL or CONFIG_MX6S */
+#endif	/* CONFIG_NEXO */
 #endif	/* CONFIG_MX6Q */
 #else
 
