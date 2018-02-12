@@ -71,14 +71,6 @@ static const iomux_v3_cfg_t init_pads[] = {
 #define GP_ECSPI1_NOR_CS	IMX_GPIO_NR(3, 19)
 	IOMUX_PAD_CTRL(EIM_D19__GPIO3_IO19, WEAK_PULLUP),
 
-	/* ECSPI2 */
-	/* conflict */
-	IOMUX_PAD_CTRL(CSI0_DAT10__ECSPI2_MISO, SPI_PAD_CTRL),
-	IOMUX_PAD_CTRL(CSI0_DAT9__ECSPI2_MOSI, SPI_PAD_CTRL),
-	IOMUX_PAD_CTRL(CSI0_DAT8__ECSPI2_SCLK, SPI_PAD_CTRL),
-#define GP_ECSPI2_CS		IMX_GPIO_NR(5, 29)
-	/* conflict */
-	IOMUX_PAD_CTRL(CSI0_DAT11__GPIO5_IO29, WEAK_PULLUP),	/* for spi displays */
 #define GP_SPI_DISPLAY_RESET	IMX_GPIO_NR(4, 20)
 	IOMUX_PAD_CTRL(DI0_PIN4__GPIO4_IO20, WEAK_PULLUP),
 
@@ -355,8 +347,6 @@ int board_spi_cs_gpio(unsigned bus, unsigned cs)
 {
 	if (bus == 0 && cs == 0)
 		return GP_ECSPI1_NOR_CS;
-	if (bus == 1 && cs == 0)
-		return GP_ECSPI2_CS;
 	if (cs >> 8)
 		return (cs >> 8);
 	return -1;
