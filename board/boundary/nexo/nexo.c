@@ -191,13 +191,12 @@ static const iomux_v3_cfg_t init_pads[] = {
         IOMUX_PAD_CTRL(GPIO_7__FLEXCAN1_TX, CAN_PAD_CTRL),
         IOMUX_PAD_CTRL(GPIO_8__FLEXCAN1_RX, CAN_PAD_CTRL),
 	
-	/* USBH1 */
+	/* USBH1 - power supplied by http://ww1.microchip.com/downloads/en/DeviceDoc/mic20xx.pdf chipset*/
 	IOMUX_PAD_CTRL(EIM_D30__USB_H1_OC, WEAK_PULLUP),
-#define GP_USB_HUB_RESET	IMX_GPIO_NR(7, 12)
-	IOMUX_PAD_CTRL(GPIO_17__GPIO7_IO12, WEAK_PULLDN),
+	IOMUX_PAD_CTRL(EIM_D31__USB_H1_PWR, WEAK_PULLUP),
 
 	/* USBOTG */
-	IOMUX_PAD_CTRL(GPIO_1__USB_OTG_ID, WEAK_PULLUP),
+	IOMUX_PAD_CTRL(KEY_ROW4__USB_OTG_PWR, WEAK_PULLUP),
 	IOMUX_PAD_CTRL(KEY_COL4__USB_OTG_OC, WEAK_PULLUP),
 
 	/* USDHC2 - TiWi wl1271 */
@@ -315,9 +314,11 @@ int board_ehci_hcd_init(int port)
 {
 	if (port) {
 		/* Reset USB hub */
+		/* no HUB to reset
 		gpio_set_value(GP_USB_HUB_RESET, 0);
 		mdelay(2);
 		gpio_set_value(GP_USB_HUB_RESET, 1);
+		*/
 	}
 
 	return 0;
@@ -447,7 +448,6 @@ static const unsigned short gpios_out_low[] = {
 	GP_BT_RFKILL_RESET,
 	GP_REG_USBOTG,
 	GP_OV5642_RESET,
-	GP_USB_HUB_RESET,
 };
 
 static const unsigned short gpios_out_high[] = {
