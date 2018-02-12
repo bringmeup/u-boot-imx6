@@ -139,10 +139,6 @@ static const iomux_v3_cfg_t init_pads[] = {
 #define GP_BACKLIGHT_LVDS	IMX_GPIO_NR(1, 18)
 	IOMUX_PAD_CTRL(SD1_CMD__GPIO1_IO18, WEAK_PULLDN),
 
-	/* reg_usbotg_vbus */
-#define GP_REG_USBOTG		IMX_GPIO_NR(3, 22)
-	IOMUX_PAD_CTRL(EIM_D22__GPIO3_IO22, WEAK_PULLDN),
-
 	/* reg_wlan_en */
 #define GP_REG_WLAN_EN		IMX_GPIO_NR(6, 8)
 	IOMUX_PAD_CTRL(NANDF_ALE__GPIO6_IO08, WEAK_PULLDN),
@@ -189,12 +185,18 @@ static const iomux_v3_cfg_t init_pads[] = {
 	IOMUX_PAD_CTRL(GPIO_7__FLEXCAN1_TX, CAN_PAD_CTRL),
 	IOMUX_PAD_CTRL(GPIO_8__FLEXCAN1_RX, CAN_PAD_CTRL),
 
-	/* USBH1 - power supplied by http://ww1.microchip.com/downloads/en/DeviceDoc/mic20xx.pdf chipset*/
+	/* USB HOST
+	 * (power supplied by http://ww1.microchip.com/downloads/en/DeviceDoc/mic20xx.pdf chipset)
+	 */
+#define GP_REG_USBHOST		IMX_GPIO_NR(3, 31)
+	IOMUX_PAD_CTRL(EIM_D31__USB_H1_PWR, WEAK_PULLDN),
 	IOMUX_PAD_CTRL(EIM_D30__USB_H1_OC, WEAK_PULLUP),
-	IOMUX_PAD_CTRL(EIM_D31__USB_H1_PWR, WEAK_PULLUP),
 
-	/* USBOTG */
-	IOMUX_PAD_CTRL(KEY_ROW4__USB_OTG_PWR, WEAK_PULLUP),
+	/* USB OTG
+	 * (power supplied by http://ww1.microchip.com/downloads/en/DeviceDoc/mic20xx.pdf chipset)
+	 */
+#define GP_REG_USBOTG		IMX_GPIO_NR(4, 15)
+	IOMUX_PAD_CTRL(KEY_ROW4__USB_OTG_PWR, WEAK_PULLDN),
 	IOMUX_PAD_CTRL(KEY_COL4__USB_OTG_OC, WEAK_PULLUP),
 
 	/* AUD4 - AudioCodec */
@@ -448,7 +450,8 @@ static const unsigned short gpios_out_low[] = {
 	GP_BACKLIGHT_RGB,
 	GP_REG_WLAN_EN, /* low disables WiFi */
 	GP_BT_RFKILL_RESET, /* low disables BT */
-	GP_REG_USBOTG,
+	GP_REG_USBOTG, /* LOW disables OTG power */
+	GP_REG_USBHOST, /* LOW disables HOST power */
 	GP_OV5642_RESET,
 };
 
