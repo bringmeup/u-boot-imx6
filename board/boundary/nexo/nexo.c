@@ -205,29 +205,35 @@ static const iomux_v3_cfg_t init_pads[] = {
 	/* AudioCodec, 12MHz clock via Clock Controller Module*/
 	IOMUX_PAD_CTRL(GPIO_0__CCM_CLKO1, OUTPUT_40OHM),
 
-	/* USDHC3 - sdcard */
+        /* USDHC1 - sdcard (external) */
+        IOMUX_PAD_CTRL(SD1_CLK__SD1_CLK, USDHC_PAD_CTRL),
+        IOMUX_PAD_CTRL(SD1_CMD__SD1_CMD, USDHC_PAD_CTRL),
+        IOMUX_PAD_CTRL(SD1_DAT0__SD1_DATA0, USDHC_PAD_CTRL),
+        IOMUX_PAD_CTRL(SD1_DAT1__SD1_DATA1, USDHC_PAD_CTRL),
+        IOMUX_PAD_CTRL(SD1_DAT2__SD1_DATA2, USDHC_PAD_CTRL),
+        IOMUX_PAD_CTRL(SD1_DAT3__SD1_DATA3, USDHC_PAD_CTRL),
+
+	/* USDHC3 - sdcard (bootable) */
 	IOMUX_PAD_CTRL(SD3_CLK__SD3_CLK, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD3_CMD__SD3_CMD, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD3_DAT0__SD3_DATA0, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD3_DAT1__SD3_DATA1, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD3_DAT2__SD3_DATA2, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD3_DAT3__SD3_DATA3, USDHC_PAD_CTRL),
-#define GP_USDHC3_CD		IMX_GPIO_NR(7, 0)
-	IOMUX_PAD_CTRL(SD3_DAT5__GPIO7_IO00, WEAK_PULLUP),
+#define GP_USDHC3_RESET		IMX_GPIO_NR(7, 8)
+	IOMUX_PAD_CTRL(SD3_RST__SD3_RESET, WEAK_PULLUP),
+#define GP_USDHC3_VSELECT	IMX_GPIO_NR(6, 14)
+	IOMUX_PAD_CTRL(NANDF_CS1__SD3_VSELECT, OUTPUT_40OHM),
 
-	/* USDHC4 - sdcard */
+	/* USDHC4 - WiFi */
 	IOMUX_PAD_CTRL(SD4_CLK__SD4_CLK, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD4_CMD__SD4_CMD, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD4_DAT0__SD4_DATA0, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD4_DAT1__SD4_DATA1, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD4_DAT2__SD4_DATA2, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD4_DAT3__SD4_DATA3, USDHC_PAD_CTRL),
-#define GP_USDHC4_CD		IMX_GPIO_NR(2, 6)
-	IOMUX_PAD_CTRL(NANDF_D6__GPIO2_IO06, WEAK_PULLUP),
 
-	/* wl1271 */
-#define GPIRQ_WL1271_WL		IMX_GPIO_NR(6, 14)
-	IOMUX_PAD_CTRL(NANDF_CS1__GPIO6_IO14, WEAK_PULLDN),
+	IOMUX_PAD_CTRL(NANDF_CS1__SD3_VSELECT, OUTPUT_40OHM),
 };
 
 #ifdef CONFIG_CMD_FBPANEL
@@ -333,9 +339,10 @@ int board_ehci_power(int port, int on)
 #ifdef CONFIG_FSL_ESDHC
 struct fsl_esdhc_cfg board_usdhc_cfg[] = {
 	{.esdhc_base = USDHC3_BASE_ADDR, .bus_width = 4,
-			.gp_cd = GP_USDHC3_CD},
-	{.esdhc_base = USDHC4_BASE_ADDR, .bus_width = 4,
-			.gp_cd = GP_USDHC4_CD},
+			.gp_cd = 0,
+			.gp_reset = GP_USDHC3_RESET },
+	{.esdhc_base = USDHC1_BASE_ADDR, .bus_width = 4,
+			.gp_cd = 0},
 };
 #endif
 
@@ -451,6 +458,7 @@ static const unsigned short gpios_out_high[] = {
 	GP_SGTL5000_HP_MUTE,
 	GP_OV5642_POWER_DOWN,
 	GP_OV5640_MIPI_POWER_DOWN,
+	GP_USDHC3_VSELECT /* high=3.3v */,
 };
 
 static const unsigned short gpios_in[] = {
@@ -462,9 +470,7 @@ static const unsigned short gpios_in[] = {
 	GP_GPIOKEY_VOL_UP,
 	GPIRQ_ENET_PHY,
 	GPIRQ_TC3587,
-	GPIRQ_WL1271_WL,
-	GP_USDHC3_CD,
-	GP_USDHC4_CD,
+	GP_USDHC3_RESET,
 };
 
 int board_early_init_f(void)
@@ -487,9 +493,7 @@ int board_init(void)
 #ifndef CONFIG_SYS_BOARD
 const char *board_get_board_type(void)
 {
-	if (gpio_get_value(GPIRQ_WL1271_WL))
-		return "nitrogen6x";
-	return "sabrelite";
+	return "nexo";
 }
 #endif
 
