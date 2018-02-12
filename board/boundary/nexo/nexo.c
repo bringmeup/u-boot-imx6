@@ -298,14 +298,12 @@ static const iomux_v3_cfg_t rgb_gpio_pads[] = {
 };
 
 static const struct i2c_pads_info i2c_pads[] = {
-	/* I2C1, SGTL5000 */
-	I2C_PADS_INFO_ENTRY(I2C1, EIM_D21, 3, 21, EIM_D28, 3, 28, I2C_PAD_CTRL),
-	/* I2C2 Camera, MIPI */
-	I2C_PADS_INFO_ENTRY(I2C2, KEY_COL3, 4, 12, KEY_ROW3, 4, 13, I2C_PAD_CTRL),
+	/* I2C1, TouchPanel? */
+	I2C_PADS_INFO_ENTRY(I2C1, CSI0_DAT9, 5, 27, CSI0_DAT8, 5, 26, I2C_PAD_CTRL),
 	/* I2C3, AudioCodec */
 	I2C_PADS_INFO_ENTRY(I2C3, EIM_D17, 3, 17, EIM_D18, 3, 18, I2C_PAD_CTRL),
 };
-#define I2C_BUS_CNT	3
+#define I2C_BUS_CNT	2
 
 #ifdef CONFIG_USB_EHCI_MX6
 int board_ehci_hcd_init(int port)
