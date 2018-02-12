@@ -65,8 +65,8 @@ DECLARE_GLOBAL_DATA_PTR;
 
 static const iomux_v3_cfg_t init_pads[] = {
 	/* bt_rfkill */
-#define GP_BT_RFKILL_RESET	IMX_GPIO_NR(6, 16)
-	IOMUX_PAD_CTRL(NANDF_CS3__GPIO6_IO16, WEAK_PULLDN),
+#define GP_BT_RFKILL_RESET	IMX_GPIO_NR(2, 5)
+	IOMUX_PAD_CTRL(NANDF_D5__GPIO2_IO05, WEAK_PULLDN),
 
 	/* ECSPI1 */
 	IOMUX_PAD_CTRL(EIM_D17__ECSPI1_MISO, SPI_PAD_CTRL),
@@ -144,8 +144,8 @@ static const iomux_v3_cfg_t init_pads[] = {
 	IOMUX_PAD_CTRL(EIM_D22__GPIO3_IO22, WEAK_PULLDN),
 
 	/* reg_wlan_en */
-#define GP_REG_WLAN_EN		IMX_GPIO_NR(6, 15)
-	IOMUX_PAD_CTRL(NANDF_CS2__GPIO6_IO15, WEAK_PULLDN),
+#define GP_REG_WLAN_EN		IMX_GPIO_NR(6, 8)
+	IOMUX_PAD_CTRL(NANDF_ALE__GPIO6_IO08, WEAK_PULLDN),
 
 	/* UART1, SD3_D6 and SD3_D7 on schematic, not connected
 	IOMUX_PAD_CTRL(SD3_DAT6__GPIO6_IO18, WEAK_PULLDN),
@@ -446,9 +446,8 @@ static const unsigned short gpios_out_low[] = {
 	GP_RGMII_PHY_RESET,
 	GP_BACKLIGHT_LVDS,
 	GP_BACKLIGHT_RGB,
-	/* Disable wl1271 */
-	GP_REG_WLAN_EN,
-	GP_BT_RFKILL_RESET,
+	GP_REG_WLAN_EN, /* low disables WiFi */
+	GP_BT_RFKILL_RESET, /* low disables BT */
 	GP_REG_USBOTG,
 	GP_OV5642_RESET,
 };
