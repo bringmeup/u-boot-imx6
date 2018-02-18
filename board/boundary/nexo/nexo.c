@@ -84,20 +84,9 @@ static const iomux_v3_cfg_t init_pads[] = {
 	IOMUX_PAD_CTRL(RGMII_TD3__RGMII_TD3, PAD_CTRL_ENET_TX),
 	IOMUX_PAD_CTRL(RGMII_TX_CTL__RGMII_TX_CTL, PAD_CTRL_ENET_TX),
 
-	/* i2c2 ov5640 mipi Camera controls */
-#define GP_OV5640_MIPI_POWER_DOWN	IMX_GPIO_NR(6, 9)
-	IOMUX_PAD_CTRL(NANDF_WP_B__GPIO6_IO09, WEAK_PULLUP),
 
-	/* i2c2 TC358743 interrupt */
-#define GPIRQ_TC3587		IMX_GPIO_NR(2, 5)
-	IOMUX_PAD_CTRL(NANDF_D5__GPIO2_IO05, WEAK_PULLDN),
-
-	/* i2c2 ov5642 Camera controls, J5 */
-	IOMUX_PAD_CTRL(GPIO_3__CCM_CLKO2, OUTPUT_40OHM),	/* mclk */
-#define GP_OV5642_POWER_DOWN	IMX_GPIO_NR(1, 6)
-	IOMUX_PAD_CTRL(GPIO_6__GPIO1_IO06, WEAK_PULLUP),
-#define GP_OV5642_RESET		IMX_GPIO_NR(1, 8)
-	IOMUX_PAD_CTRL(GPIO_8__GPIO1_IO08, WEAK_PULLDN),
+	// camera
+	IOMUX_PAD_CTRL(GPIO_3__CCM_CLKO2, OUTPUT_40OHM),	/* mclk, MIPI_XCLK*/
 
 	/* PWM4 - Backlight on LVDS connector: J6 */
 #define GP_BACKLIGHT_LVDS	IMX_GPIO_NR(1, 18)
@@ -323,18 +312,14 @@ static const unsigned short gpios_out_low[] = {
 	GP_BT_RFKILL_RESET, /* low disables BT */
 	GP_REG_USBOTG, /* LOW disables OTG power */
 	GP_REG_USBHOST, /* LOW disables HOST power */
-	GP_OV5642_RESET,
 };
 
 static const unsigned short gpios_out_high[] = {
-	GP_OV5642_POWER_DOWN,
-	GP_OV5640_MIPI_POWER_DOWN,
 	GP_USDHC3_VSELECT /* high=3.3v */,
 };
 
 static const unsigned short gpios_in[] = {
 	GPIRQ_ENET_PHY,
-	GPIRQ_TC3587,
 	GP_USDHC3_RESET,
 };
 
