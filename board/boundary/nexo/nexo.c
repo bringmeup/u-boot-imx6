@@ -84,25 +84,6 @@ static const iomux_v3_cfg_t init_pads[] = {
 	IOMUX_PAD_CTRL(RGMII_TD3__RGMII_TD3, PAD_CTRL_ENET_TX),
 	IOMUX_PAD_CTRL(RGMII_TX_CTL__RGMII_TX_CTL, PAD_CTRL_ENET_TX),
 
-	/* gpio_Keys - Button assignments for J14 */
-#define GP_GPIOKEY_BACK		IMX_GPIO_NR(2, 2)
-	IOMUX_PAD_CTRL(NANDF_D2__GPIO2_IO02, BUTTON_PAD_CTRL),
-#define GP_GPIOKEY_HOME		IMX_GPIO_NR(2, 4)
-	IOMUX_PAD_CTRL(NANDF_D4__GPIO2_IO04, BUTTON_PAD_CTRL),
-#define GP_GPIOKEY_MENU		IMX_GPIO_NR(2, 1)
-	IOMUX_PAD_CTRL(NANDF_D1__GPIO2_IO01, BUTTON_PAD_CTRL),
-	/* Labeled Search (mapped to Power under Android) */
-#define GP_GPIOKEY_POWER	IMX_GPIO_NR(2, 3)
-	IOMUX_PAD_CTRL(NANDF_D3__GPIO2_IO03, BUTTON_PAD_CTRL),
-#define GP_GPIOKEY_VOL_DOWN	IMX_GPIO_NR(4, 5)
-	IOMUX_PAD_CTRL(GPIO_19__GPIO4_IO05, BUTTON_PAD_CTRL),
-#define GP_GPIOKEY_VOL_UP	IMX_GPIO_NR(7, 13)
-	IOMUX_PAD_CTRL(GPIO_18__GPIO7_IO13, BUTTON_PAD_CTRL),
-
-	/* Needed if inappropriately used with SOM2 carrier board */
-#define GP_SGTL5000_HP_MUTE	IMX_GPIO_NR(3, 29)		/* Low is muted */
-	IOMUX_PAD_CTRL(EIM_D29__GPIO3_IO29, WEAK_PULLUP),
-
 	/* i2c2 ov5640 mipi Camera controls */
 #define GP_OV5640_MIPI_POWER_DOWN	IMX_GPIO_NR(6, 9)
 	IOMUX_PAD_CTRL(NANDF_WP_B__GPIO6_IO09, WEAK_PULLUP),
@@ -346,19 +327,12 @@ static const unsigned short gpios_out_low[] = {
 };
 
 static const unsigned short gpios_out_high[] = {
-	GP_SGTL5000_HP_MUTE,
 	GP_OV5642_POWER_DOWN,
 	GP_OV5640_MIPI_POWER_DOWN,
 	GP_USDHC3_VSELECT /* high=3.3v */,
 };
 
 static const unsigned short gpios_in[] = {
-	GP_GPIOKEY_BACK,
-	GP_GPIOKEY_HOME,
-	GP_GPIOKEY_MENU,
-	GP_GPIOKEY_POWER,
-	GP_GPIOKEY_VOL_DOWN,
-	GP_GPIOKEY_VOL_UP,
 	GPIRQ_ENET_PHY,
 	GPIRQ_TC3587,
 	GP_USDHC3_RESET,
@@ -388,12 +362,6 @@ const char *board_get_board_type(void)
 #endif
 
 const struct button_key board_buttons[] = {
-	{"back",	GP_GPIOKEY_BACK,	'B', 1},
-	{"home",	GP_GPIOKEY_HOME,	'H', 1},
-	{"menu",	GP_GPIOKEY_MENU,	'M', 1},
-	{"search",	GP_GPIOKEY_POWER,	'S', 1},
-	{"volup",	GP_GPIOKEY_VOL_UP,	'V', 1},
-	{"voldown",	GP_GPIOKEY_VOL_DOWN,	'v', 1},
 	{NULL, 0, 0, 0},
 };
 
