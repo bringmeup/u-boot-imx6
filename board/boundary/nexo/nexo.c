@@ -89,8 +89,8 @@ static const iomux_v3_cfg_t init_pads[] = {
 	IOMUX_PAD_CTRL(GPIO_3__CCM_CLKO2, OUTPUT_40OHM),	/* mclk, MIPI_XCLK*/
 
 	/* PWM4 - Backlight on LVDS connector: J6 */
-#define GP_BACKLIGHT_LVDS	IMX_GPIO_NR(1, 18)
-	IOMUX_PAD_CTRL(SD1_CMD__GPIO1_IO18, WEAK_PULLDN),
+#define GP_BACKLIGHT_LVDS	IMX_GPIO_NR(1, 9)
+	IOMUX_PAD_CTRL(GPIO_9__GPIO1_IO09, WEAK_PULLDN),
 
 	/* reg_wlan_en */
 #define GP_REG_WLAN_EN		IMX_GPIO_NR(6, 8)
@@ -307,7 +307,7 @@ static const struct display_info_t displays[] = {
 
 static const unsigned short gpios_out_low[] = {
 	GP_RGMII_PHY_RESET, /* low disables the Ethernet */
-	GP_BACKLIGHT_LVDS,
+	GP_BACKLIGHT_LVDS, /* PWM output for LVDs connector */
 	GP_REG_WLAN_EN, /* low disables WiFi */
 	GP_BT_RFKILL_RESET, /* low disables BT */
 	GP_REG_USBOTG, /* LOW disables OTG power */
