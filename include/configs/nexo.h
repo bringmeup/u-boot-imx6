@@ -17,8 +17,6 @@
 
 #define CONFIG_MACH_TYPE	3769
 
-#define CONFIG_MXC_SPI_DISPLAY
-
 #ifdef CONFIG_MX6Q
 #define CONFIG_CMD_SATA
 #endif
