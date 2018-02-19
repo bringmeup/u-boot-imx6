@@ -17,6 +17,8 @@
 
 #define CONFIG_MACH_TYPE	3769
 
+#define CONFIG_MXC_UART_BASE UART3_BASE
+
 #ifdef CONFIG_MX6Q
 #define CONFIG_CMD_SATA
 #endif

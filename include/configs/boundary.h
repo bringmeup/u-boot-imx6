@@ -245,6 +245,8 @@
 #define BD_CONSOLE	"ttymxc1"
 #elif CONFIG_MXC_UART_BASE == UART1_BASE
 #define BD_CONSOLE	"ttymxc0"
+#elif CONFIG_MXC_UART_BASE == UART3_BASE
+#define BD_CONSOLE	"ttymxc2"
 #endif
 #endif
 
