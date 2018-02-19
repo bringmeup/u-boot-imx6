@@ -34,6 +34,9 @@
 
 #define BD_I2C_MASK	7
 
+#define CONFIG_ENV_IS_IN_MMC
+
+
 #if defined(CONFIG_SABRELITE)
 #define CONFIG_ENV_IS_IN_MMC
 #include "boundary.h"
@@ -115,6 +118,10 @@
 #else
 #include "boundary.h"
 #define CONFIG_EXTRA_ENV_SETTINGS BD_BOUNDARY_ENV_SETTINGS \
+
+#undef CONFIG_USB_FUNCTION_DFU
+#undef CONFIG_DFU_SF
+#undef CONFIG_CMD_DFU
 
 #endif
 
