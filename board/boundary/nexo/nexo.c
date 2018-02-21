@@ -29,7 +29,6 @@
 #include <i2c.h>
 #include <input.h>
 #include <usb/ehci-ci.h>
-#include "spi_display.h"
 #include "../common/bd_common.h"
 #include "../common/padctrl.h"
 

@@ -7,4 +7,3 @@
 #
 
 obj-y  := nexo.o
-obj-$(CONFIG_MXC_SPI_DISPLAY) += spi_display.o
