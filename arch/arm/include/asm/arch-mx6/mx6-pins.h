@@ -27,12 +27,6 @@ enum {
 	MX6_PAD_DECLARE(MX6_PAD_,name, pco, mc, mm, sio, si, pc),
 #include "mx6q_pins.h"
 };
-#elif defined(CONFIG_MX6NEXO)
-enum {
-#define MX6_PAD_DECL(name, pco, mc, mm, sio, si, pc) \
-        MX6_PAD_DECLARE(MX6_PAD_,name, pco, mc, mm, sio, si, pc),
-#include "mx6nexo_pins.h"
-};
 #elif defined(CONFIG_MX6DL) || defined(CONFIG_MX6S)
 enum {
 #define MX6_PAD_DECL(name, pco, mc, mm, sio, si, pc) \
