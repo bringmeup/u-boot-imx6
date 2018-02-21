@@ -293,19 +293,6 @@ int board_early_init_f(void)
 	set_gpios(gpios_out_low, ARRAY_SIZE(gpios_out_low), 0);
 	SETUP_IOMUX_PADS(init_pads);
 
-	gpio_set_value(GP_LED, 0);
-	mdelay(100);
-	gpio_set_value(GP_LED, 1);
-	mdelay(100);
-	gpio_set_value(GP_LED, 0);
-	mdelay(100);
-	gpio_set_value(GP_LED, 1);
-	mdelay(100);
-	gpio_set_value(GP_LED, 0);
-	mdelay(100);
-	gpio_set_value(GP_LED, 1);
-	mdelay(100);
-
 	return 0;
 }
 
@@ -313,6 +300,32 @@ int board_init(void)
 {
 	common_board_init(i2c_pads, I2C_BUS_CNT, IOMUXC_GPR1_OTG_ID_GPIO1,
 			displays, display_cnt, 0);
+
+	gpio_set_value(GP_LED, 0);
+	mdelay(200);
+	gpio_set_value(GP_LED, 1);
+	mdelay(200);
+	gpio_set_value(GP_LED, 0);
+	mdelay(200);
+	gpio_set_value(GP_LED, 1);
+	mdelay(200);
+	gpio_set_value(GP_LED, 0);
+	mdelay(200);
+	gpio_set_value(GP_LED, 1);
+	mdelay(200);
+	gpio_set_value(GP_LED, 0);
+	mdelay(200);
+	gpio_set_value(GP_LED, 1);
+	mdelay(200);
+	gpio_set_value(GP_LED, 0);
+	mdelay(200);
+	gpio_set_value(GP_LED, 1);
+	mdelay(200);
+	gpio_set_value(GP_LED, 0);
+	mdelay(200);
+	gpio_set_value(GP_LED, 1);
+	mdelay(200);
+
 	return 0;
 }
 
