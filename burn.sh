@@ -22,7 +22,7 @@ sudo mkfs.vfat "$SDCARD"p1
 #  0     512    1024           20M
 
 # copy uboot (skip mbr)
-sudo dd if=u-boot.imx of=$SDCARD bs=1024 seek=1 conv=fsync
+sudo dd if=u-boot.imx of=$SDCARD bs=512 seek=2 conv=fsync
 
 # make sure it's safe to remove
 sync
