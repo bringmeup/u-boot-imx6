@@ -30,6 +30,7 @@
 #include <netdev.h>
 #include <spi.h>
 #include "../common/padctrl.h"
+#ifdef CONFIG_NEXO
 
 #if defined(CONFIG_FEC_MXC) && !defined(CONFIG_FEC_MXC_PHYADDR)
 #error CONFIG_FEC_MXC_PHYADDR missing
@@ -487,3 +488,5 @@ int board_eth_init(bd_t *bis)
 #endif
 	return 0;
 }
+
+#endif

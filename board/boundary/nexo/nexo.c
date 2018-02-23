@@ -31,6 +31,9 @@
 #include <usb/ehci-ci.h>
 #include "../common/bd_common.h"
 #include "../common/padctrl.h"
+#include <micrel.h>
+#include <miiphy.h>
+#include <netdev.h>
 
 DECLARE_GLOBAL_DATA_PTR;
 
@@ -40,6 +43,9 @@ DECLARE_GLOBAL_DATA_PTR;
 #define I2C_PAD_CTRL	(PAD_CTL_PUS_100K_UP |			\
 	PAD_CTL_SPEED_MED | PAD_CTL_DSE_40ohm | PAD_CTL_HYS |	\
 	PAD_CTL_ODE | PAD_CTL_SRE_FAST)
+
+#define ENET_PAD_CTRL  (PAD_CTL_PUS_100K_UP |			\
+	PAD_CTL_SPEED_MED | PAD_CTL_DSE_40ohm | PAD_CTL_HYS)
 
 #define RGB_PAD_CTRL	PAD_CTL_DSE_120ohm
 
@@ -67,22 +73,25 @@ static const iomux_v3_cfg_t init_pads[] = {
 #define GP_BT_RFKILL_RESET	IMX_GPIO_NR(2, 5)
 	IOMUX_PAD_CTRL(NANDF_D5__GPIO2_IO05, WEAK_PULLDN),
 
-	/* ENET pads that don't change for PHY reset */
-#define GPIRQ_ENET_PHY		IMX_GPIO_NR(1, 28)
-	IOMUX_PAD_CTRL(ENET_TX_EN__GPIO1_IO28, WEAK_PULLUP),
+
+	// Ethernet
 #define GP_RGMII_PHY_RESET	IMX_GPIO_NR(1, 25)
-	IOMUX_PAD_CTRL(ENET_CRS_DV__GPIO1_IO25, WEAK_PULLUP),
-
-	IOMUX_PAD_CTRL(ENET_MDIO__ENET_MDIO, PAD_CTRL_ENET_MDIO),
-	IOMUX_PAD_CTRL(ENET_MDC__ENET_MDC, PAD_CTRL_ENET_MDC),
-	IOMUX_PAD_CTRL(ENET_REF_CLK__ENET_TX_CLK, PAD_CTRL_ENET_TX),
-	IOMUX_PAD_CTRL(RGMII_TXC__RGMII_TXC, PAD_CTRL_ENET_TX),
-	IOMUX_PAD_CTRL(RGMII_TD0__RGMII_TD0, PAD_CTRL_ENET_TX),
-	IOMUX_PAD_CTRL(RGMII_TD1__RGMII_TD1, PAD_CTRL_ENET_TX),
-	IOMUX_PAD_CTRL(RGMII_TD2__RGMII_TD2, PAD_CTRL_ENET_TX),
-	IOMUX_PAD_CTRL(RGMII_TD3__RGMII_TD3, PAD_CTRL_ENET_TX),
-	IOMUX_PAD_CTRL(RGMII_TX_CTL__RGMII_TX_CTL, PAD_CTRL_ENET_TX),
-
+	IOMUX_PAD_CTRL(ENET_CRS_DV__GPIO1_IO25, OUTPUT_40OHM),
+	IOMUX_PAD_CTRL(ENET_MDIO__ENET_MDIO, ENET_PAD_CTRL),
+	IOMUX_PAD_CTRL(ENET_MDC__ENET_MDC, ENET_PAD_CTRL),
+	IOMUX_PAD_CTRL(RGMII_TXC__RGMII_TXC, ENET_PAD_CTRL),
+	IOMUX_PAD_CTRL(RGMII_TD0__RGMII_TD0, ENET_PAD_CTRL),
+	IOMUX_PAD_CTRL(RGMII_TD1__RGMII_TD1, ENET_PAD_CTRL),
+	IOMUX_PAD_CTRL(RGMII_TD2__RGMII_TD2, ENET_PAD_CTRL),
+	IOMUX_PAD_CTRL(RGMII_TD3__RGMII_TD3, ENET_PAD_CTRL),
+	IOMUX_PAD_CTRL(RGMII_TX_CTL__RGMII_TX_CTL, ENET_PAD_CTRL),
+	IOMUX_PAD_CTRL(ENET_REF_CLK__ENET_TX_CLK, ENET_PAD_CTRL),
+	IOMUX_PAD_CTRL(RGMII_RXC__RGMII_RXC	, ENET_PAD_CTRL),
+	IOMUX_PAD_CTRL(RGMII_RD0__RGMII_RD0	, ENET_PAD_CTRL),
+	IOMUX_PAD_CTRL(RGMII_RD1__RGMII_RD1	, ENET_PAD_CTRL),
+	IOMUX_PAD_CTRL(RGMII_RD2__RGMII_RD2	, ENET_PAD_CTRL),
+	IOMUX_PAD_CTRL(RGMII_RD3__RGMII_RD3	, ENET_PAD_CTRL),
+	IOMUX_PAD_CTRL(RGMII_RX_CTL__RGMII_RX_CTL, ENET_PAD_CTRL),
 
 	// camera
 	IOMUX_PAD_CTRL(GPIO_3__CCM_CLKO2, OUTPUT_40OHM),	/* mclk, MIPI_XCLK*/
@@ -202,6 +211,40 @@ static const struct i2c_pads_info i2c_pads[] = {
 };
 #define I2C_BUS_CNT	2
 
+int mx6_rgmii_rework(struct phy_device *phydev)
+{
+	/* control data pad skew - devaddr = 0x02, register = 0x04 */
+	ksz9031_phy_extended_write(phydev, 0x02,
+				   MII_KSZ9031_EXT_RGMII_CTRL_SIG_SKEW,
+				   MII_KSZ9031_MOD_DATA_NO_POST_INC, 0x0000);
+	/* rx data pad skew - devaddr = 0x02, register = 0x05 */
+	ksz9031_phy_extended_write(phydev, 0x02,
+				   MII_KSZ9031_EXT_RGMII_RX_DATA_SKEW,
+				   MII_KSZ9031_MOD_DATA_NO_POST_INC, 0x0000);
+	/* tx data pad skew - devaddr = 0x02, register = 0x05 */
+	ksz9031_phy_extended_write(phydev, 0x02,
+				   MII_KSZ9031_EXT_RGMII_TX_DATA_SKEW,
+				   MII_KSZ9031_MOD_DATA_NO_POST_INC, 0x0000);
+	/* gtx and rx clock pad skew - devaddr = 0x02, register = 0x08 */
+	ksz9031_phy_extended_write(phydev, 0x02,
+				   MII_KSZ9031_EXT_RGMII_CLOCK_SKEW,
+				   MII_KSZ9031_MOD_DATA_NO_POST_INC, 0x03FF);
+	return 0;
+}
+
+static int reset_enet_phy(struct mii_dev *bus)
+{
+	gpio_direction_output(GP_RGMII_PHY_RESET, 0);
+	/* 10ms is enough for proper reset to complete */
+	mdelay(10);
+	gpio_set_value(GP_RGMII_PHY_RESET, 1);
+	/* 10ms should be enough to wake up (have not checked in specs) */
+	mdelay(10);
+
+	return 0;
+}
+
+
 #ifdef CONFIG_USB_EHCI_MX6
 int board_ehci_hcd_init(int port)
 {
@@ -224,7 +267,6 @@ int board_ehci_power(int port, int on)
 	gpio_set_value(GP_REG_USBOTG, on);
 	return 0;
 }
-
 #endif
 
 #ifdef CONFIG_FSL_ESDHC
@@ -267,7 +309,6 @@ static const struct display_info_t displays[] = {
 #endif
 
 static const unsigned short gpios_out_low[] = {
-	GP_RGMII_PHY_RESET, /* low disables the Ethernet */
 	GP_BACKLIGHT_LVDS, /* PWM output for LVDs connector */
 	GP_REG_WLAN_EN, /* low disables WiFi */
 	GP_BT_RFKILL_RESET, /* low disables BT */
@@ -278,11 +319,11 @@ static const unsigned short gpios_out_low[] = {
 };
 
 static const unsigned short gpios_out_high[] = {
+	GP_RGMII_PHY_RESET, /* high enables the Ethernet */
 	GP_USDHC3_VSELECT /* high=3.3v */,
 };
 
 static const unsigned short gpios_in[] = {
-	GPIRQ_ENET_PHY,
 	GP_USDHC3_RESET,
 };
 
@@ -326,6 +367,46 @@ int board_init(void)
 	gpio_set_value(GP_LED, 1);
 	mdelay(200);
 
+	return 0;
+}
+
+int board_phy_config(struct phy_device *phydev)
+{
+	mx6_rgmii_rework(phydev);
+	if (phydev->drv->config)
+		phydev->drv->config(phydev);
+
+	return 0;
+}
+
+int board_eth_init(bd_t *bis)
+{
+	uint32_t base = IMX_FEC_BASE;
+	struct mii_dev *bus = NULL;
+	struct phy_device *phydev = NULL;
+	int ret;
+
+#ifdef CONFIG_FEC_MXC
+	bus = fec_get_miibus(base, -1);
+	if (!bus)
+		return 0;
+
+	bus->reset = reset_enet_phy;
+	/* scan PHY 3 - our ETH is configured like that */
+	phydev = phy_find_by_mask(bus, (0x08), PHY_INTERFACE_MODE_RGMII);
+	if (!phydev) {
+		free(bus);
+		puts("no PHY found\n");
+		return 0;
+	}
+	printf("using PHY at %d\n", phydev->addr);
+	ret = fec_probe(bis, -1, base, bus, phydev);
+	if (ret) {
+		printf("FEC MXC: %s:failed\n", __func__);
+		free(phydev);
+		free(bus);
+	}
+#endif
 	return 0;
 }
 
