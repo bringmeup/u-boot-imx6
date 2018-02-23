@@ -238,8 +238,8 @@ static int reset_enet_phy(struct mii_dev *bus)
 	/* 10ms is enough for proper reset to complete */
 	mdelay(10);
 	gpio_set_value(GP_RGMII_PHY_RESET, 1);
-	/* 10ms should be enough to wake up (have not checked in specs) */
-	mdelay(10);
+	/* 100ms should be enough to wake up (have not checked in specs) */
+	mdelay(100);
 
 	return 0;
 }
