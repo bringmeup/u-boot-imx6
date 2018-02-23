@@ -20,6 +20,8 @@
 #define CONFIG_USB_MAX_CONTROLLER_COUNT 2
 #define BD_I2C_MASK	7
 
+#define CONFIG_ENV_IS_IN_MMC
+
 /* Network */
 #define CONFIG_FEC_MXC
 #define CONFIG_MII
