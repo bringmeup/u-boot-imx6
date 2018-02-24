@@ -145,9 +145,7 @@ static const iomux_v3_cfg_t init_pads[] = {
 	/* CAN1, GPIO_07 and GPIO_08 on schematic, MC2562-E CAN controller */
 #define GP_CAN_SBY           IMX_GPIO_NR(1, 6)
 	IOMUX_PAD_CTRL(GPIO_6__GPIO1_IO06, OUTPUT_40OHM),
-#define GP_LED           IMX_GPIO_NR(1, 7)
-	IOMUX_PAD_CTRL(GPIO_7__GPIO1_IO07, OUTPUT_40OHM),
-//	IOMUX_PAD_CTRL(GPIO_7__FLEXCAN1_TX, CAN_PAD_CTRL),
+	IOMUX_PAD_CTRL(GPIO_7__FLEXCAN1_TX, CAN_PAD_CTRL),
 	IOMUX_PAD_CTRL(GPIO_8__FLEXCAN1_RX, CAN_PAD_CTRL),
 
 	/* USB HOST
@@ -314,11 +312,10 @@ static const unsigned short gpios_out_low[] = {
 	GP_BT_RFKILL_RESET, /* low disables BT */
 	GP_REG_USBOTG, /* LOW disables OTG power */
 	GP_REG_USBHOST, /* LOW disables HOST power */
-	GP_CAN_SBY, /* low ENABLES CAN controller */
-	GP_LED, /* low turns ON LED between CANH and CANL */
 };
 
 static const unsigned short gpios_out_high[] = {
+	GP_CAN_SBY, /* high DISABLES CAN controller */
 	GP_RGMII_PHY_RESET, /* high enables the Ethernet */
 	GP_USDHC3_VSELECT /* high=3.3v */,
 };
@@ -341,31 +338,6 @@ int board_init(void)
 {
 	common_board_init(i2c_pads, I2C_BUS_CNT, IOMUXC_GPR1_OTG_ID_GPIO1,
 			displays, display_cnt, 0);
-
-	gpio_set_value(GP_LED, 0);
-	mdelay(200);
-	gpio_set_value(GP_LED, 1);
-	mdelay(200);
-	gpio_set_value(GP_LED, 0);
-	mdelay(200);
-	gpio_set_value(GP_LED, 1);
-	mdelay(200);
-	gpio_set_value(GP_LED, 0);
-	mdelay(200);
-	gpio_set_value(GP_LED, 1);
-	mdelay(200);
-	gpio_set_value(GP_LED, 0);
-	mdelay(200);
-	gpio_set_value(GP_LED, 1);
-	mdelay(200);
-	gpio_set_value(GP_LED, 0);
-	mdelay(200);
-	gpio_set_value(GP_LED, 1);
-	mdelay(200);
-	gpio_set_value(GP_LED, 0);
-	mdelay(200);
-	gpio_set_value(GP_LED, 1);
-	mdelay(200);
 
 	return 0;
 }
