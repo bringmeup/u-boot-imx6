@@ -21,8 +21,8 @@
 #define BD_I2C_MASK	7
 
 #define CONFIG_ENV_IS_IN_MMC
-/* 1MB after beginning of uboot (uboot is 0.5MB right now) */
-#define CONFIG_ENV_OFFSET		(0x400 + 1 * 1024 * 1024)
+/* 1MB after beginning of disk (uboot ends around 0.5MB right now) */
+#define CONFIG_ENV_OFFSET		(1 * 1024 * 1024)
 #define CONFIG_SYS_MMC_ENV_DEV		0
 
 /* Network */
@@ -38,5 +38,14 @@
 
 #include "boundary.h"
 #define CONFIG_EXTRA_ENV_SETTINGS BD_BOUNDARY_ENV_SETTINGS \
+	"serverip=192.168.1.100\0" \
+	"ethaddr=00:19:b8:00:00:03\0" \
+	"uload=setenv autoload 0;" \
+		"dhcp;"\
+		"nfs 0x12000000 192.168.1.100:/srv/aosp/uboot/u-boot.imx;"\
+		"\0" \
+	"uburn=mmc dev 0;" \
+		"mmc write 0x12000000 0x2 0x700;"\
+		"\0"
 
 #endif	       /* __CONFIG_H */
