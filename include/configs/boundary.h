@@ -456,9 +456,12 @@
 #endif
 
 #if defined(CONFIG_ENV_IS_IN_MMC)
-#undef CONFIG_ENV_OFFSET
+#ifndef CONFIG_ENV_OFFSET
 #define CONFIG_ENV_OFFSET		(6 * 64 * 1024)
+#endif
+#ifndef CONFIG_SYS_MMC_ENV_DEV
 #define CONFIG_SYS_MMC_ENV_DEV		0
+#endif
 #elif defined(CONFIG_ENV_IS_IN_SPI_FLASH)
 #define CONFIG_ENV_SECT_SIZE		(8 * 1024)
 #define CONFIG_ENV_SPI_BUS		CONFIG_SF_DEFAULT_BUS

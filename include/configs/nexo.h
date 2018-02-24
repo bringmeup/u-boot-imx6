@@ -21,6 +21,9 @@
 #define BD_I2C_MASK	7
 
 #define CONFIG_ENV_IS_IN_MMC
+/* 1MB after beginning of uboot (uboot is 0.5MB right now) */
+#define CONFIG_ENV_OFFSET		(0x400 + 1 * 1024 * 1024)
+#define CONFIG_SYS_MMC_ENV_DEV		0
 
 /* Network */
 #define CONFIG_FEC_MXC
