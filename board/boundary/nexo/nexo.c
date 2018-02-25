@@ -177,6 +177,7 @@ static const iomux_v3_cfg_t init_pads[] = {
 	IOMUX_PAD_CTRL(SD1_DAT1__SD1_DATA1, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD1_DAT2__SD1_DATA2, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD1_DAT3__SD1_DATA3, USDHC_PAD_CTRL),
+	IOMUX_PAD_CTRL(KEY_COL1__SD1_VSELECT, USDHC_PAD_CTRL),
 
 	/* USDHC3 - sdcard (bootable) */
 	IOMUX_PAD_CTRL(SD3_CLK__SD3_CLK, USDHC_PAD_CTRL),
@@ -186,9 +187,8 @@ static const iomux_v3_cfg_t init_pads[] = {
 	IOMUX_PAD_CTRL(SD3_DAT2__SD3_DATA2, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD3_DAT3__SD3_DATA3, USDHC_PAD_CTRL),
 #define GP_USDHC3_RESET		IMX_GPIO_NR(7, 8)
-	IOMUX_PAD_CTRL(SD3_RST__SD3_RESET, WEAK_PULLUP),
-#define GP_USDHC3_VSELECT	IMX_GPIO_NR(6, 14)
-	IOMUX_PAD_CTRL(NANDF_CS1__SD3_VSELECT, OUTPUT_40OHM),
+	IOMUX_PAD_CTRL(SD3_RST__SD3_RESET, OUTPUT_40OHM),
+	IOMUX_PAD_CTRL(NANDF_CS1__SD3_VSELECT, USDHC_PAD_CTRL),
 
 	/* USDHC4 - WiFi */
 	IOMUX_PAD_CTRL(SD4_CLK__SD4_CLK, USDHC_PAD_CTRL),
@@ -317,11 +317,10 @@ static const unsigned short gpios_out_low[] = {
 static const unsigned short gpios_out_high[] = {
 	GP_CAN_SBY, /* high DISABLES CAN controller */
 	GP_RGMII_PHY_RESET, /* high enables the Ethernet */
-	GP_USDHC3_VSELECT /* high=3.3v */,
+	GP_USDHC3_RESET /* LOW holds card in reset, high keeps it ON */
 };
 
 static const unsigned short gpios_in[] = {
-	GP_USDHC3_RESET,
 };
 
 int board_early_init_f(void)
