@@ -51,12 +51,15 @@
 		"\0" \
 	"kload=setenv autoload 0;" \
 		"dhcp;"\
-		"nfs 0x13000000 192.168.1.100:/srv/aosp/boot/dts/imx6qp-nexo.dtb;" \
+		"nfs 0x13000000 192.168.1.100:/srv/aosp/boot/imx6qp-nexo.dtb;" \
 		"fdt addr 0x13000000;" \
 		"setenv fdt_high 0xffffffff;" \
+		"nfs 0x13800000 192.168.1.100:/srv/aosp/boot/uramdisk.img;"\
 		"nfs 0x10800000 192.168.1.100:/srv/aosp/boot/zImage"\
 		"\0" \
-	"kboot=bootz 0x10800000 - fsl,nexo" \
+	"kboot=" \
+		"setenv bootargs console=ttymxc2,115200 vmalloc=128M consoleblank=0 rootwait androidboot.hardware=freescale androidboot.bootdev=mmcblk1 androidboot.serialno=00 cma=448M;" \
+		"bootz 0x10800000 0x13800000 0x13000000" \
 		"\0" \
 	"k=run kload; run kboot" \
 		"\0" \
