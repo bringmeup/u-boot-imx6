@@ -49,5 +49,15 @@
 		"\0" \
 	"u=run uload; run uburn" \
 		"\0" \
+	"kload=setenv autoload 0;" \
+		"dhcp;"\
+		"nfs 0x10800000 192.168.1.100:/srv/aosp/boot/dts/imx6qp-nexo.dtb;" \
+		"fdt addr 0x10800000;" \
+		"nfs 0x12000000 192.168.1.100:/srv/aosp/boot/zImage"\
+		"\0" \
+	"kboot=bootz 0x12000000 - fsl,nexo" \
+		"\0" \
+	"k=run kload; run kboot" \
+		"\0" \
 
 #endif	       /* __CONFIG_H */
