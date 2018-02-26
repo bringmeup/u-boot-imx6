@@ -46,6 +46,8 @@
 		"\0" \
 	"uburn=mmc dev 0;" \
 		"mmc write 0x12000000 0x2 0x700;"\
-		"\0"
+		"\0" \
+	"u=run uload; run uburn" \
+		"\0" \
 
 #endif	       /* __CONFIG_H */
