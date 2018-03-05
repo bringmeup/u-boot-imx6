@@ -147,6 +147,8 @@ static const iomux_v3_cfg_t init_pads[] = {
 	IOMUX_PAD_CTRL(GPIO_6__GPIO1_IO06, OUTPUT_40OHM),
 #define GP_LED           IMX_GPIO_NR(1, 7)
 	IOMUX_PAD_CTRL(GPIO_7__GPIO1_IO07, OUTPUT_40OHM),
+#define GP_REG           IMX_GPIO_NR(2, 31)
+	IOMUX_PAD_CTRL(EIM_EB3__GPIO2_IO31, OUTPUT_40OHM),
 //	IOMUX_PAD_CTRL(GPIO_7__FLEXCAN1_TX, CAN_PAD_CTRL),
 	IOMUX_PAD_CTRL(GPIO_8__FLEXCAN1_RX, CAN_PAD_CTRL),
 
@@ -320,7 +322,8 @@ static const unsigned short gpios_out_low[] = {
 
 static const unsigned short gpios_out_high[] = {
 	GP_RGMII_PHY_RESET, /* high enables the Ethernet */
-	GP_USDHC3_RESET /* LOW holds card in reset, high keeps it ON */
+	GP_USDHC3_RESET, /* LOW holds card in reset, high keeps it ON */
+	GP_REG, /* high enables the supply */
 };
 
 static const unsigned short gpios_in[] = {
@@ -342,28 +345,34 @@ int board_init(void)
 			displays, display_cnt, 0);
 
 	gpio_set_value(GP_LED, 0);
+	gpio_set_value(GP_REG, 0);
 	mdelay(200);
 	gpio_set_value(GP_LED, 1);
+	gpio_set_value(GP_REG, 1);
 	mdelay(200);
 	gpio_set_value(GP_LED, 0);
+	gpio_set_value(GP_REG, 0);
 	mdelay(200);
 	gpio_set_value(GP_LED, 1);
+	gpio_set_value(GP_REG, 1);
 	mdelay(200);
 	gpio_set_value(GP_LED, 0);
+	gpio_set_value(GP_REG, 0);
 	mdelay(200);
 	gpio_set_value(GP_LED, 1);
+	gpio_set_value(GP_REG, 1);
 	mdelay(200);
 	gpio_set_value(GP_LED, 0);
+	gpio_set_value(GP_REG, 0);
 	mdelay(200);
 	gpio_set_value(GP_LED, 1);
+	gpio_set_value(GP_REG, 1);
 	mdelay(200);
 	gpio_set_value(GP_LED, 0);
+	gpio_set_value(GP_REG, 0);
 	mdelay(200);
 	gpio_set_value(GP_LED, 1);
-	mdelay(200);
-	gpio_set_value(GP_LED, 0);
-	mdelay(200);
-	gpio_set_value(GP_LED, 1);
+	gpio_set_value(GP_REG, 1);
 	mdelay(200);
 
 	return 0;
