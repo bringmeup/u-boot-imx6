@@ -105,7 +105,7 @@ static const iomux_v3_cfg_t init_pads[] = {
 
 	/* PWM4 - Backlight on LVDS connector: J6 */
 	IOMUX_PAD_CTRL(SD1_CMD__GPIO1_IO18, WEAK_PULLUP),
-#define GP_BACKLIGHT_LVDS IMX_GPIO_NR(1, 18)
+#define GP_BACKLIGHT_LED IMX_GPIO_NR(1, 18)
 
 	/* reg_wlan_en */
 #define GP_REG_WLAN_EN		IMX_GPIO_NR(6, 15)
@@ -265,7 +265,7 @@ int board_spi_cs_gpio(unsigned bus, unsigned cs)
 #ifdef CONFIG_CMD_FBPANEL
 void board_enable_lvds(const struct display_info_t *di, int enable)
 {
-	gpio_direction_output(GP_BACKLIGHT_LVDS, enable);
+	gpio_direction_output(GP_BACKLIGHT_LED, enable);
 }
 
 void board_enable_lcd(const struct display_info_t *di, int enable)
@@ -313,7 +313,7 @@ static const unsigned short gpios_out_high[] = {
 };
 
 static const unsigned short gpios_in[] = {
-	GP_BACKLIGHT_LVDS,
+	GP_BACKLIGHT_LED,
 	GP_BACKLIGHT_RGB,
 	GPIRQ_WL1271_WL,
 	GP_USDHC3_CD,

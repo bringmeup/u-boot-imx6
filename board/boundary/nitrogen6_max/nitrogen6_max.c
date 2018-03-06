@@ -176,7 +176,7 @@ static const iomux_v3_cfg_t init_pads[] = {
 	IOMUX_PAD_CTRL(SD1_DAT1__GPIO1_IO17, WEAK_PULLDN),
 
 	/* PWM4 - Backlight on LVDS connector: J6, pin 20 */
-#define GP_BACKLIGHT_LVDS	IMX_GPIO_NR(1, 18)
+#define GP_BACKLIGHT_LED	IMX_GPIO_NR(1, 18)
 	IOMUX_PAD_CTRL(SD1_CMD__GPIO1_IO18, WEAK_PULLDN),
 
 	/* reg_usbotg_vbus */
@@ -456,7 +456,7 @@ void enable_backlight(const struct display_info_t *di, int enable, int gp_backli
 
 void board_enable_lvds(const struct display_info_t *di, int enable)
 {
-	enable_backlight(di, enable, GP_BACKLIGHT_LVDS, GP_LVDS_LP8860_EN);
+	enable_backlight(di, enable, GP_BACKLIGHT_LED, GP_LVDS_LP8860_EN);
 }
 
 void board_enable_lvds2(const struct display_info_t *di, int enable)
@@ -591,7 +591,7 @@ static const unsigned short gpios_in[] = {
 	GP_GPIOKEY_VOL_DOWN,
 	GP_GPIOKEY_VOL_UP,
 	GP_HEADPHONE_DET,
-	GP_BACKLIGHT_LVDS,
+	GP_BACKLIGHT_LED,
 	GP_BACKLIGHT_LVDS2,
 	GP_BACKLIGHT_RGB,
 	GPIRQ_ENET_PHY,

@@ -105,7 +105,7 @@ static iomux_v3_cfg_t const init_pads[] = {
 	IOMUX_PAD_CTRL(EIM_BCLK__GPIO6_IO31, WEAK_PULLDN),
 
 	/* PWM4 on LVDS connector: J6 */
-#define GP_BACKLIGHT_LVDS	IMX_GPIO_NR(1, 18)
+#define GP_BACKLIGHT_LED	IMX_GPIO_NR(1, 18)
 	IOMUX_PAD_CTRL(SD1_CMD__GPIO1_IO18, WEAK_PULLDN),
 #define GP_LVDS_DE_15_4	IMX_GPIO_NR(4, 9)
 	IOMUX_PAD_CTRL(KEY_ROW1__GPIO4_IO09, WEAK_PULLUP),
@@ -233,7 +233,7 @@ void board_enable_lvds(const struct display_info_t *di, int enable)
 {
 	if (enable)
 		mdelay(100);	/* let panel sync up before enabling backlight */
-	gpio_direction_output(GP_BACKLIGHT_LVDS, enable);
+	gpio_direction_output(GP_BACKLIGHT_LED, enable);
 }
 
 int fbp_detect_gpio(struct display_info_t const *di)
@@ -259,7 +259,7 @@ static const unsigned short gpios_out_low[] = {
 	GP_UART3_TX_EN,
 	GP_UART4_TX_EN,
 	GP_UART5_TX_EN,
-	GP_BACKLIGHT_LVDS,
+	GP_BACKLIGHT_LED,
 	GP_EMMC_RESET,
 };
 

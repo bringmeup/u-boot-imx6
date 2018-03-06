@@ -217,7 +217,7 @@ static const iomux_v3_cfg_t init_pads[] = {
 	 * PWM4 - Backlight on LVDS connector: J4, pin 3
 	 * 0 is bright, 1 is dim
 	 */
-#define GP_BACKLIGHT_LVDS	IMX_GPIO_NR(1, 18)
+#define GP_BACKLIGHT_LED	IMX_GPIO_NR(1, 18)
 	IOMUX_PAD_CTRL(SD1_CMD__GPIO1_IO18, WEAK_PULLUP),
 	/* 0 is 8 bit */
 #define GP_8BIT_LVDS		IMX_GPIO_NR(4, 15)
@@ -420,7 +420,7 @@ void board_enable_lvds(const struct display_info_t *di, int enable)
 {
 	gpio_set_value(GP_8BIT_LVDS,
 			(di->pixfmt == IPU_PIX_FMT_RGB666) ? 1 : 0);
-	gpio_set_value(GP_BACKLIGHT_LVDS, enable ^
+	gpio_set_value(GP_BACKLIGHT_LED, enable ^
 			((di->fbflags & FBF_BKLIT_LOW_ACTIVE) ? 1 : 0));
 	gpio_set_value(GP_BACKLIGHT_LVDS_EN, enable);
 }
@@ -506,7 +506,7 @@ static const unsigned short gpios_out_high[] = {
 	GP_ECSPI1_NOR_CS,	/* SS1 of spi nor */
 	GP_FLEXCAN_STANDBY,
 	GP_OV5640_MIPI_POWER_DOWN,	/* camera power down */
-	GP_BACKLIGHT_LVDS,
+	GP_BACKLIGHT_LED,
 };
 
 static const unsigned short gpios_in[] = {

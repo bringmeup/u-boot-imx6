@@ -97,8 +97,16 @@ static const iomux_v3_cfg_t init_pads[] = {
 	IOMUX_PAD_CTRL(GPIO_3__CCM_CLKO2, OUTPUT_40OHM),	/* mclk, MIPI_XCLK*/
 
 	/* PWM4 - Backlight on LVDS connector: J6 */
-#define GP_BACKLIGHT_LVDS	IMX_GPIO_NR(1, 9)
+#define GP_BACKLIGHT_LED	IMX_GPIO_NR(1, 9)
 	IOMUX_PAD_CTRL(GPIO_9__GPIO1_IO09, WEAK_PULLDN),
+
+#define GP_BACKLIGHT_LED_SUPPLY	IMX_GPIO_NR(2, 31)
+	IOMUX_PAD_CTRL(EIM_EB3__GPIO2_IO31, OUTPUT_40OHM),
+#define GP_BACKLIGHT_LED_ENABLE	IMX_GPIO_NR(1, 5)
+	IOMUX_PAD_CTRL(GPIO_5__GPIO1_IO05, OUTPUT_40OHM),
+
+#define GP_LVDS_EN		IMX_GPIO_NR(5, 20)
+	IOMUX_PAD_CTRL(CSI0_DATA_EN__GPIO5_IO20, OUTPUT_40OHM),
 
 	/* reg_wlan_en */
 #define GP_REG_WLAN_EN		IMX_GPIO_NR(6, 8)
@@ -291,14 +299,19 @@ int board_spi_cs_gpio(unsigned bus, unsigned cs)
 #ifdef CONFIG_CMD_FBPANEL
 void board_enable_lvds(const struct display_info_t *di, int enable)
 {
-	gpio_direction_output(GP_BACKLIGHT_LVDS, enable);
+	gpio_direction_output(GP_BACKLIGHT_LED_SUPPLY, enable);
+	mdelay(100);
+	gpio_direction_output(GP_BACKLIGHT_LED_ENABLE, 0);
+	mdelay(100);
+	gpio_direction_output(GP_BACKLIGHT_LED, 0);
 }
 
 static const struct display_info_t displays[] = {
-	VD_AUO_FHD_15IN_12V(LVDS, NULL, 0, 0x00)
-
-	/* fusion7 specific touchscreen */
-	//VD_FUSION7(LCD, fbp_detect_i2c, 2, 0x10),
+	/* uses both lvds connectors */
+	VD_1080P60(LVDS, NULL, 0, 0x00),
+	VD_AUO_FHD_15IN_12V_DBL(LVDS, NULL, 0, 0x00),
+	VD_AUO_FHD_15IN_12V(LVDS, NULL, 0, 0x00),
+	VD_AUO_FHD_15IN_12V_SLW(LVDS, NULL, 0, 0x00),
 };
 #define display_cnt	ARRAY_SIZE(displays)
 #else
@@ -307,7 +320,9 @@ static const struct display_info_t displays[] = {
 #endif
 
 static const unsigned short gpios_out_low[] = {
-	GP_BACKLIGHT_LVDS, /* PWM output for LVDs connector */
+	GP_BACKLIGHT_LED_ENABLE, /* power supply for LED disable */
+	GP_BACKLIGHT_LED, /* PWM output for display's LED */
+	GP_BACKLIGHT_LED_SUPPLY, /* power supply for LED */
 	GP_REG_WLAN_EN, /* low disables WiFi */
 	GP_BT_RFKILL_RESET, /* low disables BT */
 	GP_REG_USBOTG, /* LOW disables OTG power */
@@ -315,6 +330,7 @@ static const unsigned short gpios_out_low[] = {
 };
 
 static const unsigned short gpios_out_high[] = {
+	GP_LVDS_EN, /* enable lvds logic */
 	GP_CAN_SBY, /* high DISABLES CAN controller */
 	GP_RGMII_PHY_RESET, /* high enables the Ethernet */
 	GP_USDHC3_RESET /* LOW holds card in reset, high keeps it ON */

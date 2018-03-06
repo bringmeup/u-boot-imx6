@@ -179,7 +179,7 @@ static const iomux_v3_cfg_t init_pads[] = {
 	IOMUX_PAD_CTRL(NAND_DATA07__GPIO4_IO_11, WEAK_PULLUP),
 
 	/* PWM4 - for LVDS panel */
-#define GP_BACKLIGHT_LVDS	IMX_GPIO_NR(1, 13)
+#define GP_BACKLIGHT_LED	IMX_GPIO_NR(1, 13)
 	IOMUX_PAD_CTRL(GPIO1_IO13__GPIO1_IO_13, WEAK_PULLDN_OUTPUT),
 
 	/* reg_wlan */
@@ -400,7 +400,7 @@ struct fsl_esdhc_cfg board_usdhc_cfg[] = {
 #ifdef CONFIG_CMD_FBPANEL
 void board_enable_lvds(const struct display_info_t *di, int enable)
 {
-	gpio_direction_output(GP_BACKLIGHT_LVDS, enable);
+	gpio_direction_output(GP_BACKLIGHT_LED, enable);
 	gpio_direction_output(GP_LVDS_ENABLE, enable);
 }
 
@@ -488,7 +488,7 @@ static const unsigned short gpios_out_low[] = {
 	GP_WIFI_FAIL,
 	GP_RGMII_PHY_RESET,
 	GP_RGMII2_PHY_RESET,
-	GP_BACKLIGHT_LVDS,
+	GP_BACKLIGHT_LED,
 	GP_USB_HUB_RESET,
 	GP_USB_OTG1_PWR,
 	GP_LVDS_ENABLE,
