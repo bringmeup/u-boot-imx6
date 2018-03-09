@@ -23,7 +23,11 @@
 #define CONFIG_ENV_IS_IN_MMC
 /* 1MB after beginning of disk (uboot ends around 0.5MB right now) */
 #define CONFIG_ENV_OFFSET		(1 * 1024 * 1024)
-#define CONFIG_SYS_MMC_ENV_DEV		0
+/* change when needed, DEVICE 1 is the 'BIG' SD card slot */
+#define CONFIG_SYS_MMC_ENV_DEV	1
+#define NEXO_UBOOT_MMC_DEV		"1"
+#define NEXO_OS_MMC_DEV			"0"
+#define NEXO_NFS_SRV_ADDRESS	"192.168.1.100"
 
 /* Network */
 #define CONFIG_FEC_MXC
@@ -38,27 +42,28 @@
 
 #include "boundary.h"
 #define CONFIG_EXTRA_ENV_SETTINGS BD_BOUNDARY_ENV_SETTINGS \
-	"serverip=192.168.1.100\0" \
+	"serverip="NEXO_NFS_SRV_ADDRESS"\0" \
 	"ethaddr=00:19:b8:00:00:03\0" \
 	"uload=setenv autoload 0;" \
 		"dhcp;"\
-		"nfs 0x12000000 192.168.1.100:/srv/aosp/uboot/u-boot.imx;"\
+		"nfs 0x12000000 "NEXO_NFS_SRV_ADDRESS":/srv/aosp/uboot/u-boot.imx;"\
 		"\0" \
-	"uburn=mmc dev 0;" \
-		"mmc write 0x12000000 0x2 0x700;"\
+	"uburn=mmc write 0x12000000 0x2 0x700;"\
 		"\0" \
-	"u=run uload; run uburn" \
+	"u=run uload; mmc dev "NEXO_UBOOT_MMC_DEV"; run uburn" \
 		"\0" \
 	"kload=setenv autoload 0;" \
 		"dhcp;"\
-		"nfs 0x13000000 192.168.1.100:/srv/aosp/boot/imx6qp-nexo.dtb;" \
+		"nfs 0x13000000 "NEXO_NFS_SRV_ADDRESS":/srv/aosp/boot/imx6qp-nexo.dtb;" \
 		"fdt addr 0x13000000;" \
 		"setenv fdt_high 0xffffffff;" \
-		"nfs 0x13800000 192.168.1.100:/srv/aosp/boot/uramdisk.img;"\
-		"nfs 0x10800000 192.168.1.100:/srv/aosp/boot/zImage"\
+		"nfs 0x13800000 "NEXO_NFS_SRV_ADDRESS":/srv/aosp/boot/uramdisk.img;"\
+		"nfs 0x10800000 "NEXO_NFS_SRV_ADDRESS":/srv/aosp/boot/zImage"\
 		"\0" \
 	"kboot=" \
-		"setenv bootargs console=ttymxc2,115200 vmalloc=128M consoleblank=0 rootwait androidboot.hardware=freescale androidboot.bootdev=mmcblk1 androidboot.serialno=00 cma=448M;" \
+		"setenv bootargs console=ttymxc2,115200 vmalloc=128M "\
+		"consoleblank=0 rootwait androidboot.hardware=freescale "\
+		"androidboot.bootdev=mmcblk"NEXO_OS_MMC_DEV" androidboot.serialno=00 cma=448M;" \
 		"bootz 0x10800000 0x13800000 0x13000000" \
 		"\0" \
 	"k=run kload; run kboot" \
