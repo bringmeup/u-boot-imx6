@@ -288,10 +288,6 @@ struct fsl_esdhc_cfg board_usdhc_cfg[] = {
 #ifdef CONFIG_MXC_SPI
 int board_spi_cs_gpio(unsigned bus, unsigned cs)
 {
-//	if (bus == 0 && cs == 0)
-//		return GP_ECSPI1_NOR_CS;
-//	if (cs >> 8)
-//		return (cs >> 8);
 	return -1;
 }
 #endif
@@ -299,19 +295,12 @@ int board_spi_cs_gpio(unsigned bus, unsigned cs)
 #ifdef CONFIG_CMD_FBPANEL
 void board_enable_lvds(const struct display_info_t *di, int enable)
 {
-	gpio_direction_output(GP_BACKLIGHT_LED_SUPPLY, enable);
-	mdelay(100);
-	gpio_direction_output(GP_BACKLIGHT_LED_ENABLE, 0);
-	mdelay(100);
-	gpio_direction_output(GP_BACKLIGHT_LED, 0);
+	/* LVDS is ready -- fire the backlight */
+	gpio_direction_output(GP_BACKLIGHT_LED, 1);
 }
 
 static const struct display_info_t displays[] = {
-	/* uses both lvds connectors */
 	VD_1080P60(LVDS, NULL, 0, 0x00),
-	VD_AUO_FHD_15IN_12V_DBL(LVDS, NULL, 0, 0x00),
-	VD_AUO_FHD_15IN_12V(LVDS, NULL, 0, 0x00),
-	VD_AUO_FHD_15IN_12V_SLW(LVDS, NULL, 0, 0x00),
 };
 #define display_cnt	ARRAY_SIZE(displays)
 #else
@@ -320,17 +309,17 @@ static const struct display_info_t displays[] = {
 #endif
 
 static const unsigned short gpios_out_low[] = {
-	GP_BACKLIGHT_LED_ENABLE, /* power supply for LED disable */
-	GP_BACKLIGHT_LED, /* PWM output for display's LED */
-	GP_BACKLIGHT_LED_SUPPLY, /* power supply for LED */
 	GP_REG_WLAN_EN, /* low disables WiFi */
 	GP_BT_RFKILL_RESET, /* low disables BT */
 	GP_REG_USBOTG, /* LOW disables OTG power */
 	GP_REG_USBHOST, /* LOW disables HOST power */
+	GP_BACKLIGHT_LED, /* LOW on pwm control of LED backlight DISABLES it */
 };
 
 static const unsigned short gpios_out_high[] = {
-	GP_LVDS_EN, /* enable lvds logic */
+	GP_LVDS_EN, /* high ENABLES lvds logic (it will be hardwired to high on board anyway) */
+	GP_BACKLIGHT_LED_SUPPLY, /* high ENABLES power supply for LED backlight */
+	GP_BACKLIGHT_LED_ENABLE, /* high ENABLES pwm control of LED backlight */
 	GP_CAN_SBY, /* high DISABLES CAN controller */
 	GP_RGMII_PHY_RESET, /* high enables the Ethernet */
 	GP_USDHC3_RESET /* LOW holds card in reset, high keeps it ON */
