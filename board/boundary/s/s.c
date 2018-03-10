@@ -190,7 +190,7 @@ static const iomux_v3_cfg_t init_pads[] = {
 	IOMUX_PAD_CTRL(SD1_DAT3__GPIO1_IO21, WEAK_PULLDN),
 
 	/* PWM4 - Backlight on LVDS connector: J6 */
-#define GP_BACKLIGHT_LED	IMX_GPIO_NR(1, 18)
+#define GP_BACKLIGHT_LVDS	IMX_GPIO_NR(1, 18)
 	IOMUX_PAD_CTRL(SD1_CMD__GPIO1_IO18, WEAK_PULLDN),
 
 	/* reg_usbotg_vbus */
@@ -315,7 +315,7 @@ int board_spi_cs_gpio(unsigned bus, unsigned cs)
 void board_enable_lvds(const struct display_info_t *di, int enable)
 {
 	gpio_set_value(GP_BACKLIGHT_TPS, enable);
-	gpio_set_value(GP_BACKLIGHT_LED, enable);
+	gpio_set_value(GP_BACKLIGHT_LVDS, enable);
 }
 
 static const struct display_info_t displays[] = {
@@ -347,7 +347,7 @@ static const unsigned short gpios_out_low[] = {
 	GP_I2C3_EDID,
 	GP_POWER_OFF,
 	GP_BACKLIGHT_TPS,
-	GP_BACKLIGHT_LED,
+	GP_BACKLIGHT_LVDS,
 	GP_REG_USBOTG,
 	GP_REG_WLAN_EN,
 	GP_USBH1_HUB_RESET,

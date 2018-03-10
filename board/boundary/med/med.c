@@ -102,7 +102,7 @@ static const iomux_v3_cfg_t init_pads[] = {
 	IOMUX_PAD_CTRL(EIM_D20__GPIO3_IO20, WEAK_PULLUP),	/* output - to NXP P1-10 */
 
 	/* Backlight on LVDS connector */
-#define GP_BACKLIGHT_LED IMX_GPIO_NR(1, 18)
+#define GP_BACKLIGHT_LVDS IMX_GPIO_NR(1, 18)
 	IOMUX_PAD_CTRL(SD1_CMD__GPIO1_IO18, WEAK_PULLUP),
 
 	/* UART1 */
@@ -163,7 +163,7 @@ int board_spi_cs_gpio(unsigned bus, unsigned cs)
 
 void board_enable_lvds(const struct display_info_t *di, int enable)
 {
-	gpio_direction_output(GP_BACKLIGHT_LED, enable);
+	gpio_direction_output(GP_BACKLIGHT_LVDS, enable);
 }
 
 static const struct display_info_t displays[] = {
@@ -185,7 +185,7 @@ static const unsigned short gpios_out_high[] = {
 };
 
 static const unsigned short gpios_in[] = {
-	GP_BACKLIGHT_LED,
+	GP_BACKLIGHT_LVDS,
 	GP_S2,
 	GP_S4,
 	GP_S3,
