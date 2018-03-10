@@ -60,7 +60,6 @@ void fbp_setup_display(const struct display_info_t *displays, int cnt);
 #define VD_DC050WX(_mode, _detect, _bus, _addr)		VDF_DC050WX(_mode, "DC050WX", RGB24, FBF_MODESTR, _detect, _bus, _addr)
 #define VD_INNOLUX_WXGA_14IN_12V(_mode, _detect, _bus, _addr) VDF_INNOLUX_WXGA_14IN_12V(_mode, "INNOLUX-WXGA-IN14-12V", RGB666, 0, _detect, _bus, _addr)
 #define VD_AUO_WXGA_11IN_12V(_mode, _detect, _bus, _addr) VDF_AUO_WXGA_11IN_12V(_mode, "AUO-WXGA-IN11-12V", RGB24, 0, _detect, _bus, _addr)
-#define VD_AUO_FHD_15IN_12V(_mode, _detect, _bus, _addr) VDF_AUO_FHD_15IN_12V(_mode, "AUO-FHD-IN15-12V", RGB24, 0, _detect, _bus, _addr)
 #define VD_OSD_WSVGA(_mode, _detect, _bus, _addr)	VDF_OSD_WSVGA(_mode, "OSD-WSVGA", RGB666, 0, _detect, _bus, _addr)
 #define VD_INNOLUX_WVGA(_mode, _detect, _bus, _addr)	VDF_INNOLUX_WVGA(_mode, "INNOLUX-WVGA", RGB666, 0, _detect, _bus, _addr)
 #define VD_INNOLUX_WVGA_12V(_mode, _detect, _bus, _addr) VDF_INNOLUX_WVGA(_mode, "INNOLUX-WVGA-12V", RGB666, 0, _detect, _bus, _addr)
@@ -433,27 +432,6 @@ void fbp_setup_display(const struct display_info_t *displays, int cnt);
 		.lower_margin	= 10,\
 		.hsync_len	= 100,\
 		.vsync_len	= 6,\
-		.sync		= FB_SYNC_EXT,\
-		.vmode		= FB_VMODE_NONINTERLACED,\
-	}\
-}
-
-/* AUO model G156HTN02.0, 15.6", 1920x1080, 24 bit lvds */
-#define VDF_AUO_FHD_15IN_12V(_mode, _name, _fmt, _flags, _detect, _bus, _addr) \
-{\
-	VD_HEADER(_mode, _fmt, _flags, _detect, _bus, _addr),\
-	.mode	= {\
-		.name		= _name,\
-		.refresh	= 60,\
-		.xres		= 1920,\
-		.yres		= 1080,\
-		.pixclock	= 1000000000000ULL / (1920+50+50+10) / (1080+10+10+10) / 60,\
-		.left_margin	= 50,\
-		.right_margin	= 50,\
-		.upper_margin	= 10,\
-		.lower_margin	= 10,\
-		.hsync_len	= 10,\
-		.vsync_len	= 10,\
 		.sync		= FB_SYNC_EXT,\
 		.vmode		= FB_VMODE_NONINTERLACED,\
 	}\
