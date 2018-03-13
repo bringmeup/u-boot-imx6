@@ -43,30 +43,51 @@
 #include "boundary.h"
 #define CONFIG_EXTRA_ENV_SETTINGS BD_BOUNDARY_ENV_SETTINGS \
 	"serverip="NEXO_NFS_SRV_ADDRESS"\0" \
+	"nexohostip="NEXO_NFS_SRV_ADDRESS"\0" \
 	"ethaddr=00:19:b8:00:00:03\0" \
-	"uload=setenv autoload 0;" \
-		"dhcp;"\
-		"nfs 0x12000000 "NEXO_NFS_SRV_ADDRESS":/srv/aosp/uboot/u-boot.imx;"\
+	"a_zImage=0x10800000\0" \
+	"a_fdt=0x13000000\0" \
+	"a_ramdisk=0x13800000\0" \
+	"a_uboot=0x12000000\0" \
+	"devos="NEXO_OS_MMC_DEV"\0" \
+	"devuboot="NEXO_UBOOT_MMC_DEV"\0" \
+	"nexo=" \
+		"setenv bootargs " \
+			"'console='${console}',115200 vmalloc=128M "\
+			"consoleblank=0 rootwait androidboot.hardware=freescale "\
+			"androidboot.bootdev=mmcblk'${devos}' androidboot.serialno=d1500bc69 " \
+			"wlcore.mac='${wlmac}' androidboot.wlan.mac='${wlmac}' " \
+			"androidboot.btmacaddr='${wlmac}' cma=448M';" \
+		"setenv kload " \
+			"'setenv autoload 0; dhcp;" \
+			"nfs '${a_fdt} ${nexohostip}':/srv/aosp/boot/imx6qp-nexo.dtb;" \
+			"fdt addr '${a_fdt}';" \
+			"setenv fdt_high 0xffffffff;" \
+			"nfs '${a_ramdisk} ${nexohostip}':/srv/aosp/boot/uramdisk.img;"\
+			"nfs '${a_zImage} ${nexohostip}':/srv/aosp/boot/zImage';"\
+		"setenv kboot " \
+			"'bootz '${a_zImage} ${a_ramdisk} ${a_fdt};" \
+		"setenv uload " \
+			"'setenv autoload 0; dhcp;" \
+			"nfs '${a_uboot} ${nexohostip}':/srv/aosp/uboot/u-boot.imx';"\
+		"setenv uburn " \
+			"'mmc dev '${devuboot}'; mmc write '${a_uboot}' 0x2 0x700';"\
 		"\0" \
-	"uburn=mmc write 0x12000000 0x2 0x700;"\
+	"n=run nexo" \
 		"\0" \
-	"u=run uload; mmc dev "NEXO_UBOOT_MMC_DEV"; run uburn" \
+	"ul=run nexo; run uload" \
 		"\0" \
-	"kload=setenv autoload 0;" \
-		"dhcp;"\
-		"nfs 0x13000000 "NEXO_NFS_SRV_ADDRESS":/srv/aosp/boot/imx6qp-nexo.dtb;" \
-		"fdt addr 0x13000000;" \
-		"setenv fdt_high 0xffffffff;" \
-		"nfs 0x13800000 "NEXO_NFS_SRV_ADDRESS":/srv/aosp/boot/uramdisk.img;"\
-		"nfs 0x10800000 "NEXO_NFS_SRV_ADDRESS":/srv/aosp/boot/zImage"\
+	"ub=run nexo; run uburn" \
 		"\0" \
-	"kboot=" \
-		"setenv bootargs console=ttymxc2,115200 vmalloc=128M "\
-		"consoleblank=0 rootwait androidboot.hardware=freescale "\
-		"androidboot.bootdev=mmcblk"NEXO_OS_MMC_DEV" androidboot.serialno=00 cma=448M;" \
-		"bootz 0x10800000 0x13800000 0x13000000" \
+	"u=run nexo; run uload; run uburn" \
 		"\0" \
-	"k=run kload; run kboot" \
+	"kl=run nexo; run kload" \
 		"\0" \
+	"kb=run nexo; run kboot" \
+		"\0" \
+	"k=run nexo; run kload; run kboot" \
+		"\0" \
+
+
 
 #endif	       /* __CONFIG_H */
