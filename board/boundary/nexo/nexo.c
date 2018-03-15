@@ -73,6 +73,9 @@ static const iomux_v3_cfg_t init_pads[] = {
 #define GP_BT_RFKILL_RESET	IMX_GPIO_NR(2, 5)
 	IOMUX_PAD_CTRL(NANDF_D5__GPIO2_IO05, WEAK_PULLDN),
 
+	/* reg_wlan_en */
+#define GP_REG_WLAN_EN		IMX_GPIO_NR(6, 8)
+	IOMUX_PAD_CTRL(NANDF_ALE__GPIO6_IO08, WEAK_PULLDN),
 
 	// Ethernet
 #define GP_RGMII_PHY_RESET	IMX_GPIO_NR(1, 25)
@@ -107,10 +110,6 @@ static const iomux_v3_cfg_t init_pads[] = {
 
 #define GP_LVDS_EN		IMX_GPIO_NR(5, 20)
 	IOMUX_PAD_CTRL(CSI0_DATA_EN__GPIO5_IO20, OUTPUT_40OHM),
-
-	/* reg_wlan_en */
-#define GP_REG_WLAN_EN		IMX_GPIO_NR(6, 8)
-	IOMUX_PAD_CTRL(NANDF_ALE__GPIO6_IO08, WEAK_PULLDN),
 
 	/* UART1, SD3_D6 and SD3_D7 on schematic, not connected
 	IOMUX_PAD_CTRL(SD3_DAT6__GPIO6_IO18, WEAK_PULLDN),
@@ -205,8 +204,6 @@ static const iomux_v3_cfg_t init_pads[] = {
 	IOMUX_PAD_CTRL(SD4_DAT1__SD4_DATA1, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD4_DAT2__SD4_DATA2, USDHC_PAD_CTRL),
 	IOMUX_PAD_CTRL(SD4_DAT3__SD4_DATA3, USDHC_PAD_CTRL),
-
-	IOMUX_PAD_CTRL(NANDF_CS1__SD3_VSELECT, OUTPUT_40OHM),
 };
 
 static const struct i2c_pads_info i2c_pads[] = {
