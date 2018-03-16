@@ -76,6 +76,11 @@ static const iomux_v3_cfg_t init_pads[] = {
 	/* reg_wlan_en */
 #define GP_REG_WLAN_EN		IMX_GPIO_NR(6, 8)
 	IOMUX_PAD_CTRL(NANDF_ALE__GPIO6_IO08, WEAK_PULLDN),
+	/* wl1831 */
+#define GPIRQ_CBM283_WL		IMX_GPIO_NR(2, 0)
+	IOMUX_PAD_CTRL(NANDF_D0__GPIO2_IO00, WEAK_PULLDN),
+
+	IOMUX_PAD_CTRL(ENET_RXD0__OSC32K_32K_OUT, OUTPUT_40OHM),/* slow clock */
 
 	// Ethernet
 #define GP_RGMII_PHY_RESET	IMX_GPIO_NR(1, 25)
@@ -323,6 +328,7 @@ static const unsigned short gpios_out_high[] = {
 };
 
 static const unsigned short gpios_in[] = {
+	GPIRQ_CBM283_WL,
 };
 
 int board_early_init_f(void)
