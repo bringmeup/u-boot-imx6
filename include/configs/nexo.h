@@ -24,8 +24,8 @@
 /* 1MB after beginning of disk (uboot ends around 0.5MB right now) */
 #define CONFIG_ENV_OFFSET		(1 * 1024 * 1024)
 /* change when needed, DEVICE 1 is the 'BIG' SD card slot */
-#define CONFIG_SYS_MMC_ENV_DEV	1
-#define NEXO_UBOOT_MMC_DEV		"1"
+#define CONFIG_SYS_MMC_ENV_DEV	0
+#define NEXO_UBOOT_MMC_DEV		"0"
 #define NEXO_OS_MMC_DEV			"0"
 #define NEXO_NFS_SRV_ADDRESS	"192.168.1.100"
 
